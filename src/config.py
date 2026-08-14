@@ -6,6 +6,8 @@ path Hermes dari sys.path saat runtime supaya paket venv yang dipakai.
 """
 import os
 import sys
+from pathlib import Path
+from dotenv import load_dotenv
 
 # ── Guard PYTHONPATH: buang path Hermes agar venv project yang menang ──
 sys.path[:] = [p for p in sys.path if "hermes-agent" not in p.replace("\\", "/")]
