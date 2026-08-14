@@ -77,21 +77,33 @@ def _router_local(prompt, system):
     return r.choices[0].message.content, "router_local"
 
 
-_CHAIN = [
-    ("opencode_zen", lambda p, s: _opencode_zen(p, s), bool(config.OPENCODE_API_KEY)),
-    ("groq", lambda p, s: _groq(p, s), bool(config.GROQ_API_KEY)),
-    ("gemini", lambda p, s: _gemini(p, s), bool(config.GEMINI_API_KEY)),
-    ("router_local", lambda p, s: _router_local(p, s), bool(config.EVAL_API_KEY)),
-]
+def _has_key(provider_name):
+    """Runtime check: apakah API key tersedia? Baca ulang os.environ
+    agar perubahan Secrets (Streamlit Cloud) langsung terlihat tanpa
+    perlu restart module."""
+    import os
+    env = os.environ
+    return {
+        "opencode_zen": bool(env.get("OPENCODE_API_KEY")),
+        "groq": bool(env.get("GROQ_API_KEY")),
+        "gemini": bool(env.get("GEMINI_API_KEY")),
+        "router_local": bool(env.get("EVAL_API_KEY")),
+    }.get(provider_name, False)
 
 
 def generate(prompt, system="You are a helpful assistant."):
-    """Return (text, provider). Coba tiap provider sesuai urutan; jika gagal
-    lanjut ke berikutnya. Return error string + 'error' provider jika SEMUA
-    gagal, supaya caller (eval/RAG) tidak crash."""
+    """Return (text, provider). Cek key runtime (per-call, bukan module-load)
+    agar Secrets di Streamlit Cloud yang berubah saat app jalan langsung kena.
+    Return error string + 'error' provider jika SEMUA gagal."""
     errors = []
-    for name, fn, available in _CHAIN:
-        if not available:
+    chain = [
+        ("opencode_zen", _opencode_zen),
+        ("groq", _groq),
+        ("gemini", _gemini),
+        ("router_local", _router_local),
+    ]
+    for name, fn in chain:
+        if not _has_key(name):
             errors.append(f"{name}: no api key")
             continue
         try:
