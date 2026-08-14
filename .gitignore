@@ -1,0 +1,31 @@
+# ── Secrets & env ──
+.env
+*.key
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# ── Data (jangan commit PDF mentah & index besar) ──
+data/raw/
+qdrant_storage/
+*.pdf
+
+# ── Log & artefak sementara ──
+*_log.txt
+*_boot.log
+*.lock
+
+# ── Eval artefak besar (opsional) ──
+# results/ tetap di-commit (tabel benchmark = aset portofolio)
+
+# ── OS / editor ──
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

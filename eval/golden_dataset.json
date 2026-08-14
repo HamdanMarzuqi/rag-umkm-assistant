@@ -1,0 +1,205 @@
+[
+  {
+    "question": "Apa yang dimaksud dengan Program Pemberdayaan Usaha Mikro dan Kecil melalui Kegiatan Sertifikasi Hak atas Tanah?",
+    "ground_truth": "Rangkaian kegiatan yang meliputi identifikasi, seleksi dan verifikasi subyek dan obyek (tanah), untuk proses pengurusan sertifikasi Hak atas Tanah yang sebagian biayanya dibantu dengan dana Anggaran Pendapatan dan Belanja Negara (APBN).",
+    "source": "15_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 5,
+    "verified": true
+  },
+  {
+    "question": "Siapa yang menjabat sebagai Sekretaris di Pokja Kabupaten/Kota?",
+    "ground_truth": "Kepala Dinas/Instansi yang Membidangi Pembinaan Koperasi dan UKM Kabupaten/Kota",
+    "source": "12_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 22,
+    "verified": true
+  },
+  {
+    "question": "Siapa yang mengoordinasikan dan mengendalikan kemudahan, pelindungan, dan pemberdayaan Usaha Mikro, Kecil, dan Menengah?",
+    "ground_truth": "Menteri",
+    "source": "04_Peraturan_Pemerintah_Nomor_7_tahun_2021_Kemudahan_Pelindungan_dan_Pemberdayaan_K.pdf",
+    "page": 58,
+    "verified": true
+  },
+  {
+    "question": "Siapa yang menerima permohonan dan dokumen asli kepemilikan tanah dalam proses sertifikasi hak atas tanah?",
+    "ground_truth": "Kantor Pertanahan Kabupaten/Kota",
+    "source": "15_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 14,
+    "verified": true
+  },
+  {
+    "question": "Apa saja jenis pendidikan dan pelatihan yang disediakan bagi sumber daya manusia koperasi dan pengusaha mikro, kecil dan menengah?",
+    "ground_truth": "Pendidikan dan pelatihan perkoperasian, kewirausahaan, keterampilan teknis, manajerial, berbasis kompetensi, bagi pelatih, pendamping dan fasilitator, serta pendidikan dan pelatihan lain dalam rangka pengembangan sumber daya manusia koperasi dan pengusaha mikro, kecil, dan menengah.",
+    "source": "27_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 9,
+    "verified": true
+  },
+  {
+    "question": "Berapa lama Nota Kesepahaman ini berlaku?",
+    "ground_truth": "5 tahun",
+    "source": "20_Nota_Kesepahaman_antara_Kementerian_Agraria_dan_Tata_Ruang_Badan_Pertanahan_Nas.pdf",
+    "page": 6,
+    "verified": true
+  },
+  {
+    "question": "Apa yang dimaksud dengan korporasi petani model Koperasi?",
+    "ground_truth": "Kelembagaan ekonomi petani yang dikelola secara profesional, dengan skala usaha ekonomi yang berbasis industrialisasi pertanian melalui Koperasi primer dan/atau Koperasi sekunder",
+    "source": "04_Peraturan_Pemerintah_Nomor_7_tahun_2021_Kemudahan_Pelindungan_dan_Pemberdayaan_K.pdf",
+    "page": 103,
+    "verified": true
+  },
+  {
+    "question": "Berapa persentase target fasilitator yang dibina untuk melakukan pendampingan kepada UMKM OBA dan Kosmetik pada tahun 2026?",
+    "ground_truth": "75%",
+    "source": "Peraturan Presiden Republik Indonesia Nomor 38 Tahun 2026.pdf",
+    "page": 141,
+    "verified": true
+  },
+  {
+    "question": "Apa yang terjadi pada Dana Bergulir jika KSP/USP-Koperasi memiliki kinerja tidak baik?",
+    "ground_truth": "Dana Bergulir harus dikembalikan seluruhnya dan dapat dialihkan kepada KSP/USP-Koperasi lain",
+    "source": "17_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 9,
+    "verified": true
+  },
+  {
+    "question": "Siapa saja yang dapat melakukan pendirian atau pendaftaran usaha?",
+    "ground_truth": "Badan usaha berbadan hukum maupun tidak berbadan hukum, dan perorangan.",
+    "source": "04_Peraturan_Pemerintah_Nomor_7_tahun_2021_Kemudahan_Pelindungan_dan_Pemberdayaan_K.pdf",
+    "page": 104,
+    "verified": true
+  },
+  {
+    "question": "Bagaimana penyelesaian perbedaan penafsiran dalam pelaksanaan Nota Kesepahaman?",
+    "ground_truth": "Dilakukan bersama-sama dengan cara musyawarah untuk mufakat sesuai dengan ketentuan peraturan perundang-undangan.",
+    "source": "20_Nota_Kesepahaman_antara_Kementerian_Agraria_dan_Tata_Ruang_Badan_Pertanahan_Nas.pdf",
+    "page": 7,
+    "verified": true
+  },
+  {
+    "question": "Apa tujuan dari pemberian bantuan sosial dalam rangka pengembangan koperasi, usaha mikro, dan kecil?",
+    "ground_truth": "Meningkatkan kualitas koperasi, usaha mikro, dan kecil sebagai gerakan ekonomi rakyat yang tumbuh menjadi kuat, sehat, mandiri, dan tangguh dalam menghadapi ekonomi nasional dan global",
+    "source": "28_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 1,
+    "verified": true
+  },
+  {
+    "question": "Apa maksud dari Nota Kesepahaman tentang Pemberdayaan Hak Atas Tanah Masyarakat bagi Pelaku Usaha Mikro dan Kecil?",
+    "ground_truth": "Sebagai dasar bagi PARA PIHAK untuk melaksanakan pemberdayaan hak atas tanah masyarakat bagi pelaku usaha mikro dan kecil, petani, nelayan dan pembudi daya ikan sesuai dengan ketentuan peraturan perundang-undangan.",
+    "source": "20_Nota_Kesepahaman_antara_Kementerian_Agraria_dan_Tata_Ruang_Badan_Pertanahan_Nas.pdf",
+    "page": 3,
+    "verified": true
+  },
+  {
+    "question": "Berapa jumlah dokumen hasil pengawasan wirausaha yang diawasi perjanjian dan pola kemitraan pada tahun 2026?",
+    "ground_truth": "50",
+    "source": "Peraturan Presiden Republik Indonesia Nomor 38 Tahun 2026.pdf",
+    "page": 154,
+    "verified": true
+  },
+  {
+    "question": "Apa saja jenis tanah yang dapat dibiayai melalui Program?",
+    "ground_truth": "Tanah Pertanian dan Tanah Non Pertanian",
+    "source": "12_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 26,
+    "verified": true
+  },
+  {
+    "question": "Siapa yang dikoordinasikan untuk menyusun Rencana Aksi Pengembangan Kewirausahaan Daerah?",
+    "ground_truth": "Kepala biro yang membidangi perekonomian pada Sekretariat Daerah",
+    "source": "Peraturan Presiden Republik Indonesia Nomor 38 Tahun 2026.pdf",
+    "page": 9,
+    "verified": true
+  },
+  {
+    "question": "Apa tanggung jawab Kementerian Koperasi dan UKM dalam pelaksanaan Program Sertipikasi Hak atas Tanah UMK?",
+    "ground_truth": "Melakukan koordinasi dengan instansi terkait dalam rangka optimalisasi pelaksanaan Program",
+    "source": "12_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 24,
+    "verified": true
+  },
+  {
+    "question": "Apa yang dimaksud dengan kemitraan distribusi dan keagenan?",
+    "ground_truth": "Pemberian hak khusus memasarkan barang dan jasa oleh usaha besar kepada Usaha Mikro, Kecil, dan Menengah, atau oleh Usaha Menengah kepada Usaha Mikro dan Usaha Kecil.",
+    "source": "04_Peraturan_Pemerintah_Nomor_7_tahun_2021_Kemudahan_Pelindungan_dan_Pemberdayaan_K.pdf",
+    "page": 70,
+    "verified": true
+  },
+  {
+    "question": "Berapa jumlah PPBR (Startup) yang mendapatkan layanan pembinaan inkubasi pada tahun 2026?",
+    "ground_truth": "50",
+    "source": "Peraturan Presiden Republik Indonesia Nomor 38 Tahun 2026.pdf",
+    "page": 137,
+    "verified": true
+  },
+  {
+    "question": "Apa tujuan dari program pemberdayaan usaha mikro dan kecil?",
+    "ground_truth": "Meningkatkan aksesibilitas usaha mikro dan kecil untuk memperoleh kredit dari Perbankan",
+    "source": "12_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 1,
+    "verified": true
+  },
+  {
+    "question": "Siapa yang menetapkan Tim Pengarah, Pokja-Pusat dan Sekretariat Pokja Pusat?",
+    "ground_truth": "Menteri",
+    "source": "15_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 15,
+    "verified": true
+  },
+  {
+    "question": "Siapa yang melakukan kegiatan pemantauan dan evaluasi Pelaksanaan program Pengembangan Kewirausahaan Nasional?",
+    "ground_truth": "Kementerian/lembaga, Pemerintah Daerah, dan Pemangku Kepentingan",
+    "source": "Peraturan Presiden Republik Indonesia Nomor 38 Tahun 2026.pdf",
+    "page": 49,
+    "verified": true
+  },
+  {
+    "question": "Kapan laporan penyaluran KUR harus disampaikan?",
+    "ground_truth": "paling lambat tanggal 10 bulan berikutnya",
+    "source": "24_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 12,
+    "verified": true
+  },
+  {
+    "question": "Siapa yang menjabat sebagai Ketua Pokja Provinsi/DI?",
+    "ground_truth": "Kepala Dinas/Instansi yang Membidangi Pembinaan Koperasi dan UKM Provinsi/DI",
+    "source": "12_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 20,
+    "verified": true
+  },
+  {
+    "question": "Berapa hasil penjualan tahunan maksimal untuk Usaha Kecil?",
+    "ground_truth": "Rp. 1.000.000.000,- (satu milyar rupiah)",
+    "source": "12_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 6,
+    "verified": true
+  },
+  {
+    "question": "Apa yang menjadi dasar penyusunan kurikulum pendidikan dan pelatihan bagi sumber daya manusia koperasi dan pengusaha mikro, kecil, dan menengah?",
+    "ground_truth": "Identifikasi kebutuhan pendidikan dan pelatihan, pemenuhan kebutuhan kompetensi sesuai dengan SKKNI, dan kebutuhan pemberdayaan dan pengembangan koperasi dan pengusaha Mikro, Kecil, dan Menengah.",
+    "source": "27_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 11,
+    "verified": true
+  },
+  {
+    "question": "Apa yang dimaksud dengan motif dalam konteks kewirausahaan?",
+    "ground_truth": "Motif adalah alasan untuk melakukan suatu perbuatan.",
+    "source": "Peraturan Presiden Republik Indonesia Nomor 38 Tahun 2026.pdf",
+    "page": 28,
+    "verified": true
+  },
+  {
+    "question": "Apa yang dilakukan Menteri jika koperasi tidak melaksanakan tugas dan tanggung jawabnya?",
+    "ground_truth": "Menteri mencabut dan memindahkan pengelolaan pemanfaatan bantuan perkuatan",
+    "source": "16_Peraturan_Menteri_Koperasi_dan_Usaha_Kecil_dan_Menengah_Republik_Indonesia_Nomor.pdf",
+    "page": 16,
+    "verified": true
+  },
+  {
+    "question": "Kapan koperasi memperoleh status badan hukum?",
+    "ground_truth": "Pada tanggal diterbitkan surat keputusan menteri yang menyelenggarakan urusan pemerintahan di bidang hukum dan hak asasi manusia tentang pengesahan badan hukum Koperasi",
+    "source": "04_Peraturan_Pemerintah_Nomor_7_tahun_2021_Kemudahan_Pelindungan_dan_Pemberdayaan_K.pdf",
+    "page": 5,
+    "verified": true
+  }
+]
