@@ -14,12 +14,15 @@ from src import config
 def _opencode_zen(prompt, system, max_retries=2):
     """Opencode Zen OpenAI-compatible endpoint."""
     from openai import OpenAI
-    client = OpenAI(base_url=config.OPENCODE_BASE_URL, api_key=config.OPENCODE_API_KEY)
+    api_key = config.get_secret("OPENCODE_API_KEY", config.OPENCODE_API_KEY)
+    base_url = config.get_secret("OPENCODE_BASE_URL", config.OPENCODE_BASE_URL)
+    model = config.get_secret("OPENCODE_MODEL", config.OPENCODE_MODEL)
+    client = OpenAI(base_url=base_url, api_key=api_key)
     last = None
     for i in range(max_retries):
         try:
             r = client.chat.completions.create(
-                model=config.OPENCODE_MODEL,
+                model=model,
                 messages=[
                     {"role": "system", "content": system},
                     {"role": "user", "content": prompt},
@@ -35,12 +38,14 @@ def _opencode_zen(prompt, system, max_retries=2):
 
 def _groq(prompt, system, max_retries=3):
     from groq import Groq
-    client = Groq(api_key=config.GROQ_API_KEY)
+    api_key = config.get_secret("GROQ_API_KEY", config.GROQ_API_KEY)
+    model = config.get_secret("GROQ_MODEL", config.GROQ_MODEL)
+    client = Groq(api_key=api_key)
     last = None
     for i in range(max_retries):
         try:
             r = client.chat.completions.create(
-                model=config.GROQ_MODEL,
+                model=model,
                 messages=[
                     {"role": "system", "content": system},
                     {"role": "user", "content": prompt},
@@ -56,8 +61,10 @@ def _groq(prompt, system, max_retries=3):
 
 def _gemini(prompt, system):
     import google.generativeai as genai
-    genai.configure(api_key=config.GEMINI_API_KEY)
-    model = genai.GenerativeModel(config.GEMINI_MODEL, system_instruction=system)
+    api_key = config.get_secret("GEMINI_API_KEY", config.GEMINI_API_KEY)
+    model_name = config.get_secret("GEMINI_MODEL", config.GEMINI_MODEL)
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel(model_name, system_instruction=system)
     r = model.generate_content(prompt)
     return r.text, "gemini"
 
@@ -65,9 +72,12 @@ def _gemini(prompt, system):
 def _router_local(prompt, system):
     """9Router OpenAI-compatible endpoint."""
     from openai import OpenAI
-    client = OpenAI(base_url=config.EVAL_BASE_URL, api_key=config.EVAL_API_KEY)
+    api_key = config.get_secret("EVAL_API_KEY", config.EVAL_API_KEY)
+    base_url = config.get_secret("EVAL_BASE_URL", config.EVAL_BASE_URL)
+    model = config.get_secret("EVAL_MODEL", config.EVAL_MODEL)
+    client = OpenAI(base_url=base_url, api_key=api_key)
     r = client.chat.completions.create(
-        model=config.EVAL_MODEL,
+        model=model,
         messages=[
             {"role": "system", "content": system},
             {"role": "user", "content": prompt},
@@ -78,16 +88,12 @@ def _router_local(prompt, system):
 
 
 def _has_key(provider_name):
-    """Runtime check: apakah API key tersedia? Baca ulang os.environ
-    agar perubahan Secrets (Streamlit Cloud) langsung terlihat tanpa
-    perlu restart module."""
-    import os
-    env = os.environ
+    """Runtime check: apakah API key tersedia? Baca dinamis dari env & secrets."""
     return {
-        "opencode_zen": bool(env.get("OPENCODE_API_KEY")),
-        "groq": bool(env.get("GROQ_API_KEY")),
-        "gemini": bool(env.get("GEMINI_API_KEY")),
-        "router_local": bool(env.get("EVAL_API_KEY")),
+        "opencode_zen": bool(config.get_secret("OPENCODE_API_KEY", config.OPENCODE_API_KEY)),
+        "groq": bool(config.get_secret("GROQ_API_KEY", config.GROQ_API_KEY)),
+        "gemini": bool(config.get_secret("GEMINI_API_KEY", config.GEMINI_API_KEY)),
+        "router_local": bool(config.get_secret("EVAL_API_KEY", config.EVAL_API_KEY)),
     }.get(provider_name, False)
 
 

@@ -15,15 +15,18 @@ sys.path[:] = [p for p in sys.path if "hermes-agent" not in p.replace("\\", "/")
 ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(ROOT / ".env")
 
-# ── Streamlit Cloud Secrets integration ──
-try:
-    import streamlit as st
-    if hasattr(st, "secrets"):
-        for k, v in st.secrets.items():
-            if isinstance(v, str) and k not in os.environ:
-                os.environ[k] = v
-except Exception:
-    pass
+def get_secret(key: str, default: str = "") -> str:
+    """Ambil value dari os.environ atau st.secrets secara dinamis."""
+    val = os.environ.get(key)
+    if val:
+        return val.strip()
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets") and key in st.secrets:
+            return str(st.secrets[key]).strip()
+    except Exception:
+        pass
+    return default
 
 # ── Sumber & storage ──
 PDF_DIR = Path(os.getenv("PDF_DIR", r"E:\Dokumenku_2025\Regulasi_Panduan UMKM_For_RAG"))
