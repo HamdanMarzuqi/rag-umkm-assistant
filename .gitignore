@@ -11,10 +11,10 @@ venv/
 .ipynb_checkpoints/
 .pytest_cache/
 
-# ── Data (jangan commit PDF mentah & index besar) ──
+# ── Data (jangan commit PDF mentah) ──
 data/raw/
-qdrant_storage/
 *.pdf
+qdrant_storage/.lock
 
 # ── Log & artefak sementara ──
 *_log.txt

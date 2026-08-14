@@ -10,17 +10,18 @@ import sys
 # ── Guard PYTHONPATH: buang path Hermes agar venv project yang menang ──
 sys.path[:] = [p for p in sys.path if "hermes-agent" not in p.replace("\\", "/")]
 
-# ── Paksa HuggingFace library pakai cache lokal (skip ping HF Hub) ──
-# Model e5 sudah ter-cache; tanpa ini sentence_transformers coba ping
-# HF CDN tiap load dan hang bila jaringan bermasalah.
-os.environ.setdefault("HF_HUB_OFFLINE", "1")
-os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
-
-from pathlib import Path
-from dotenv import load_dotenv
-
 ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(ROOT / ".env")
+
+# ── Streamlit Cloud Secrets integration ──
+try:
+    import streamlit as st
+    if hasattr(st, "secrets"):
+        for k, v in st.secrets.items():
+            if isinstance(v, str) and k not in os.environ:
+                os.environ[k] = v
+except Exception:
+    pass
 
 # ── Sumber & storage ──
 PDF_DIR = Path(os.getenv("PDF_DIR", r"E:\Dokumenku_2025\Regulasi_Panduan UMKM_For_RAG"))
