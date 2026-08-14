@@ -36,26 +36,32 @@ def _opencode_zen(prompt, system, max_retries=2):
     raise last
 
 
-def _groq(prompt, system, max_retries=3):
+def _groq(prompt, system, max_retries=2):
     from groq import Groq
     api_key = config.get_secret("GROQ_API_KEY", config.GROQ_API_KEY)
-    model = config.get_secret("GROQ_MODEL", config.GROQ_MODEL)
+    primary_model = config.get_secret("GROQ_MODEL", config.GROQ_MODEL)
+    models_to_try = [primary_model]
+    if "8b" not in primary_model.lower():
+        models_to_try.append("llama-3.1-8b-instant")
     client = Groq(api_key=api_key)
     last = None
-    for i in range(max_retries):
-        try:
-            r = client.chat.completions.create(
-                model=model,
-                messages=[
-                    {"role": "system", "content": system},
-                    {"role": "user", "content": prompt},
-                ],
-                temperature=0.1,
-            )
-            return r.choices[0].message.content, "groq"
-        except Exception as e:
-            last = e
-            time.sleep(2 ** i)
+    for m in models_to_try:
+        for i in range(max_retries):
+            try:
+                r = client.chat.completions.create(
+                    model=m,
+                    messages=[
+                        {"role": "system", "content": system},
+                        {"role": "user", "content": prompt},
+                    ],
+                    temperature=0.1,
+                )
+                return r.choices[0].message.content, f"groq"
+            except Exception as e:
+                last = e
+                if "429" in str(e) or "rate_limit" in str(e).lower():
+                    break
+                time.sleep(1)
     raise last
 
 
