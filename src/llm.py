@@ -69,6 +69,31 @@ def _gemini(prompt, system):
     return r.text, "gemini"
 
 
+def _ollama(prompt, system, max_retries=2):
+    """Ollama API / Cloud endpoint via OpenAI SDK."""
+    from openai import OpenAI
+    api_key = config.get_secret("OLLAMA_API_KEY", getattr(config, "OLLAMA_API_KEY", ""))
+    base_url = config.get_secret("OLLAMA_BASE_URL", getattr(config, "OLLAMA_BASE_URL", "https://api.ollama.com/v1"))
+    model = config.get_secret("OLLAMA_MODEL", getattr(config, "OLLAMA_MODEL", "llama3.2"))
+    client = OpenAI(base_url=base_url, api_key=api_key)
+    last = None
+    for i in range(max_retries):
+        try:
+            r = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=0.1,
+            )
+            return r.choices[0].message.content, "ollama"
+        except Exception as e:
+            last = e
+            time.sleep(2 ** i)
+    raise last
+
+
 def _router_local(prompt, system):
     """9Router OpenAI-compatible endpoint."""
     from openai import OpenAI
@@ -93,6 +118,7 @@ def _has_key(provider_name):
         "opencode_zen": bool(config.get_secret("OPENCODE_API_KEY", config.OPENCODE_API_KEY)),
         "groq": bool(config.get_secret("GROQ_API_KEY", config.GROQ_API_KEY)),
         "gemini": bool(config.get_secret("GEMINI_API_KEY", config.GEMINI_API_KEY)),
+        "ollama": bool(config.get_secret("OLLAMA_API_KEY", getattr(config, "OLLAMA_API_KEY", ""))),
         "router_local": bool(config.get_secret("EVAL_API_KEY", config.EVAL_API_KEY)),
     }.get(provider_name, False)
 
@@ -106,6 +132,7 @@ def generate(prompt, system="You are a helpful assistant."):
         ("opencode_zen", _opencode_zen),
         ("groq", _groq),
         ("gemini", _gemini),
+        ("ollama", _ollama),
         ("router_local", _router_local),
     ]
     for name, fn in chain:
