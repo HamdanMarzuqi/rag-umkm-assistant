@@ -1,32 +1,38 @@
-# ── Core RAG ──
-langchain==0.3.27
-langchain-community==0.3.27
-langchain-qdrant==0.2.0
-qdrant-client==1.12.1
+# ── Deploy-friendly requirements (Streamlit Cloud) ──
+# Loose pinning agar pip bisa pilih wheel yang cocok untuk Python 3.13.
+# Strategi: paket berat (torch, sentence-transformers, ragas) di akhir
+# supaya pesan failure mudah dibaca di log.
 
-# ── Embedding (CPU) ──
-sentence-transformers==3.3.1
+# ── Core RAG ──
+langchain>=0.3,<0.4
+langchain-community>=0.3,<0.4
+langchain-qdrant>=0.2,<0.3
+qdrant-client>=1.12,<2.0
+
+# ── Embedding (CPU, with PyTorch) ──
+sentence-transformers>=3.3,<4.0
 
 # ── LLM providers ──
-groq==0.13.1
-google-generativeai==0.8.3
+groq>=0.13
+google-generativeai>=0.8
 
-# ── Keyword search (hybrid) ──
-rank-bm25==0.2.2
+# ── Keyword search ──
+rank-bm25>=0.2
 
-# ── PDF extraction ──
-pymupdf==1.25.1
+# ── PDF extraction (pymupdf >= 1.26 ada wheel Python 3.13) ──
+pymupdf>=1.26
 
 # ── API + demo ──
-fastapi==0.115.6
-uvicorn==0.34.0
-streamlit==1.41.1
+fastapi>=0.115
+uvicorn>=0.34
+streamlit>=1.41
 
-# ── Evaluation ──
-ragas==0.2.10
-datasets==3.2.0
-langchain-huggingface==1.2.2
-langchain-openai==1.5.0
+# ── Evaluation (RAGAS butuh LLM evaluator) ──
+# Catatan: deploy demo tidak butuh ragas, tapi kita pertahankan untuk konsistensi.
+ragas>=0.2,<0.3
+datasets>=3.2
+langchain-huggingface>=1.2,<2.0
+langchain-openai>=1.5,<2.0
 
 # ── Utils ──
-python-dotenv==1.0.1
+python-dotenv>=1.0
