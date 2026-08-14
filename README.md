@@ -1,5 +1,10 @@
 # RAG Knowledge Assistant -- Retrieval Evaluation Study
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://hamdanmarzuqi-rag-umkm-assistant-app-abdc75.streamlit.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/HamdanMarzuqi/rag-umkm-assistant)
+
+**Live Demo**: [https://hamdanmarzuqi-rag-umkm-assistant-app-abdc75.streamlit.app/](https://hamdanmarzuqi-rag-umkm-assistant-app-abdc75.streamlit.app/)
+
 A Retrieval-Augmented Generation (RAG) system for Indonesian UMKM (micro, small, and medium enterprise) regulation documents, with a rigorous evaluation of four retrieval strategies on a manually verified golden dataset.
 
 Built as a portfolio project demonstrating end-to-end RAG implementation, quantitative evaluation with RAGAS, and retrieval strategy trade-off analysis -- all running on CPU without GPU.
