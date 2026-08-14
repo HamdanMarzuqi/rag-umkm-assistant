@@ -47,7 +47,7 @@ PDF Documents (32 regulasi UMKM)
   [rag.py]  Retrieved chunks -> prompt augmentation -> LLM generates grounded answer
         |
         v
-  [llm.py]  4-tier fallback: Opencode (Zen/DeepSeek) -> Groq (Llama 3.3 70B) -> Gemini -> local LLM
+  [llm.py]  5-tier fallback: Opencode (Zen/DeepSeek) -> Groq (Llama 3.3 70B) -> Gemini -> Ollama -> local LLM
         |
         +-- [api/main.py]  FastAPI REST API (/query, /health)
         +-- [app.py]       Streamlit interactive demo
@@ -92,7 +92,7 @@ Full analysis: [results/benchmark.md](results/benchmark.md)
 |---|---|---|
 | Embedding | intfloat/multilingual-e5-small | 384-dim, CPU-friendly, good for Bahasa Indonesia |
 | Vector DB | Qdrant (embedded on-disk) | Production-grade, no Docker required for dev |
-| LLM | Opencode (Zen/DeepSeek) + Groq + Gemini | 4-tier fallback chain, no local GPU needed |
+| LLM | Opencode + Groq + Gemini + Ollama | 5-tier fallback chain, no local GPU needed |
 | Reranker | LLM-as-reranker (RankGPT-style) | Zero model download, uses existing LLM stack |
 | Keyword Search | rank-bm25 (BM25Okapi) | For hybrid retrieval |
 | PDF Extraction | pymupdf | Fast, reliable text extraction |
@@ -112,7 +112,7 @@ rag-umkm-assistant/
 │   ├── ingest.py           # PDF -> chunk -> embed -> Qdrant
 │   ├── retriever.py        # 4 strategies: naive, rerank, hyde, hybrid
 │   ├── rag.py              # retrieve -> prompt augmentation -> LLM answer
-│   └── llm.py              # 4-tier fallback: Opencode -> Groq -> Gemini -> local LLM
+│   └── llm.py              # 5-tier fallback: Opencode -> Groq -> Gemini -> Ollama -> local LLM
 ├── eval/
 │   ├── golden_dataset.json # 29 verified (question, ground_truth, source, page)
 │   ├── build_golden.py     # generate draft golden set via LLM
@@ -129,8 +129,9 @@ rag-umkm-assistant/
 ├── data/
 │   ├── raw/                # source PDF documents
 │   └── processed/          # (optional) intermediate chunks
-├── qdrant_storage/         # embedded Qdrant on-disk data
-├── requirements.txt
+├── qdrant_storage/         # embedded Qdrant on-disk vector data (tracked)
+├── requirements.txt        # minimal runtime requirements (Streamlit Cloud)
+├── requirements-dev.txt    # dev/evaluation dependencies (RAGAS, FastAPI, datasets)
 ├── .env.example
 ├── .gitignore
 └── docker-compose.yml
@@ -143,13 +144,13 @@ rag-umkm-assistant/
 ### Prerequisites
 
 - Python 3.11+
-- API keys: [Groq](https://console.groq.com/keys) and/or [Gemini](https://aistudio.google.com/app/apikey) (free tier)
-- PDF documents in a local directory (32 UMKM regulation PDFs used in this study)
+- At least one LLM API key: [Groq](https://console.groq.com/keys), [Gemini](https://aistudio.google.com/app/apikey), [Opencode](https://opencode.ai/), or [Ollama](https://ollama.com/)
+- PDF documents in a local directory (if re-ingesting documents)
 
 ### Installation
 
 ```bash
-git clone https://github.com/<your-username>/rag-umkm-assistant.git
+git clone https://github.com/HamdanMarzuqi/rag-umkm-assistant.git
 cd rag-umkm-assistant
 
 python -m venv .venv
@@ -158,7 +159,11 @@ python -m venv .venv
 # Linux/Mac
 source .venv/bin/activate
 
+# Minimal runtime (for running demo app):
 pip install -r requirements.txt
+
+# Or full dev dependencies (for running RAGAS evaluation & FastAPI):
+pip install -r requirements-dev.txt
 ```
 
 ### Configuration
@@ -168,15 +173,17 @@ cp .env.example .env
 # Edit .env and add your API keys:
 #   GROQ_API_KEY=your_key
 #   GEMINI_API_KEY=your_key
+#   OLLAMA_API_KEY=your_key
+#   OPENCODE_API_KEY=your_key
 ```
 
-### Ingest Documents
+### Ingest Documents (Optional)
 
 ```bash
 python -m src.ingest
 ```
 
-This extracts text from PDFs, chunks them (512 words, 64 overlap), embeds with multilingual-e5-small, and stores 771 vectors in Qdrant (embedded on-disk, no Docker needed).
+> **Note**: Pre-indexed Qdrant vector storage is already included in `qdrant_storage/`, so you can immediately run the app without re-ingesting PDFs.
 
 ---
 
