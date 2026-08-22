@@ -1,11 +1,11 @@
 """Pipeline RAG: retrieve -> susun prompt -> LLM jawab + sitasi sumber.
 
-Jawaban di-grounded ke konteks; bila konteks tak memuat jawaban, model
-diminta bilang tidak tahu (kurangi halusinasi).
+Upgrade v2: Conversation memory (N-turn) — user bisa follow-up tanpa ulang konteks.
 """
 import time
+from collections import defaultdict, deque
 
-from src import llm, retriever
+from src import config, llm, retriever
 
 SYSTEM = (
     "Anda asisten regulasi UMKM Indonesia. Jawab HANYA berdasarkan KONTEKS "
@@ -14,16 +14,30 @@ SYSTEM = (
     "dalam Bahasa Indonesia dan sebutkan dasar hukumnya bila ada."
 )
 
+# ── Conversation memory: session_id -> deque N-turn terakhir ─────────
+_MEMORY = defaultdict(lambda: deque(maxlen=config.CONVERSATION_TURNS))
 
-def _build_prompt(question, chunks):
+
+def _history_text(session_id):
+    """Kembalikan riwayat percakapan sebagai teks (untuk prompt)."""
+    turns = _MEMORY.get(session_id)
+    if not turns:
+        return ""
+    lines = [f"User: {q}\nAsisten: {a}" for q, a in turns]
+    return "RIWAYAT PERCAKAPAN:\n" + "\n".join(lines) + "\n\n"
+
+
+def _build_prompt(question, chunks, session_id):
+    """Susun prompt dengan konteks + riwayat percakapan."""
     ctx = "\n\n".join(
         f"[{i}] (Sumber: {c['source']}, hal.{c['page']})\n{c['text']}"
         for i, c in enumerate(chunks, 1)
     )
-    return f"KONTEKS:\n{ctx}\n\nPERTANYAAN: {question}\n\nJAWABAN:"
+    hist = _history_text(session_id)
+    return f"{hist}KONTEKS:\n{ctx}\n\nPERTANYAAN: {question}\n\nJAWABAN:"
 
 
-def answer(question, strategy="naive", top_k=None):
+def answer(question, strategy="naive", top_k=None, session_id="default"):
     """Return answer, sources, provider, and split latency measurements."""
     t0 = time.perf_counter()
     kw = {} if top_k is None else {"top_k": top_k}
@@ -32,7 +46,7 @@ def answer(question, strategy="naive", top_k=None):
     chunks = retriever.retrieve(question, strategy=strategy, **kw)
     retrieval_latency_ms = round((time.perf_counter() - retrieve_t0) * 1000, 1)
 
-    prompt = _build_prompt(question, chunks)
+    prompt = _build_prompt(question, chunks, session_id)
     llm_t0 = time.perf_counter()
     text, provider = llm.generate(prompt, system=SYSTEM)
     llm_latency_ms = round((time.perf_counter() - llm_t0) * 1000, 1)
@@ -42,6 +56,10 @@ def answer(question, strategy="naive", top_k=None):
         {"source": c["source"], "page": c["page"], "score": round(c["score"], 4)}
         for c in chunks
     ]
+
+    # Simpan ke memory (question + answer pair)
+    _MEMORY[session_id].append((question, text.strip()))
+
     return {
         "question": question,
         "answer": text.strip(),

@@ -1,14 +1,17 @@
 """Streamlit demo untuk RAG UMKM Assistant.
 
+Upgrade v2: Conversation memory (N-turn) — user bisa follow-up tanpa ulang konteks.
+
 Jalankan:
     .venv/Scripts/python.exe -m streamlit run app.py
 
-UI: input pertanyaan + pilih strategi retrieval,
+UI: chat interface + pilih strategi retrieval,
 tampilkan jawaban + sumber + metrik latensi.
 """
 
 import os
 import sys
+import uuid
 from pathlib import Path
 
 # Bootstrap project path so 'src' package terbaca
@@ -25,11 +28,19 @@ st.set_page_config(
     layout="centered",
 )
 
+# ── Session ID untuk conversation memory ──────────────────────────────
+if "sid" not in st.session_state:
+    st.session_state.sid = f"ui_{uuid.uuid4().hex[:8]}"
+
+# ── Chat history (untuk UI) ───────────────────────────────────────────
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
 # ── Cache pipeline agar tidak reload tiap interaksi ──
 @st.cache_resource(show_spinner=False)
 def _warm(strategy: str):
     """Panggil retriever sekali untuk warm-up (model load)."""
-    rag.answer("warmup", strategy=strategy)
+    rag.answer("warmup", strategy=strategy, session_id="warmup")
     return True
 
 
@@ -55,9 +66,20 @@ with st.sidebar:
         st.markdown("**Benchmark (29 pertanyaan)**")
         st.code(bm_path.read_text(encoding="utf-8").split("## Delta")[0], language=None)
 
+    st.divider()
+    st.caption(f"Session: `{st.session_state.sid}`")
+    if st.button("🗑️ Reset percakapan"):
+        st.session_state.messages = []
+        # Clear memory di rag.py (restart module)
+        import importlib
+        import src.rag as rag_module
+        importlib.reload(rag_module)
+        st.rerun()
+
 # ── Header & contoh pertanyaan ──
 st.title("RAG UMKM Assistant")
 st.caption("Pengetahuan: 32 dokumen regulasi UMKM (Kemenkop/OSS). Evaluator: RAGAS, model: multilingual-e5-small.")
+st.caption("💡 **Upgrade v2:** Conversation memory — tanya follow-up tanpa ulang konteks.")
 
 EXAMPLES = [
     "Apa saja kriteria usaha mikro?",
@@ -71,28 +93,36 @@ for i, ex in enumerate(EXAMPLES):
     if st.button(ex, key=f"ex_{i}"):
         st.session_state["pending_question"] = ex
 
+# ── Render chat history ──
+for m in st.session_state.messages:
+    with st.chat_message(m["role"]):
+        st.markdown(m["content"])
+        if m.get("sources"):
+            srcs = ", ".join(sorted({s["source"] for s in m["sources"]}))
+            st.caption(f"📚 Sumber: {srcs}")
+
 # ── Input utama ──
 question = st.text_input(
     "Pertanyaan",
     value=st.session_state.get("pending_question", ""),
     placeholder="contoh: Berapa batas modal usaha menengah?",
+    key="question_input",
 )
 run = st.button("Tanyakan", type="primary")
 
 if run and question.strip():
+    # Tambah user message ke history
+    st.session_state.messages.append({"role": "user", "content": question.strip()})
+
     with st.spinner(f"Menjawab dengan strategi '{strategy}' ..."):
-        r = rag.answer(question.strip(), strategy=strategy, top_k=top_k)
+        r = rag.answer(question.strip(), strategy=strategy, top_k=top_k, session_id=st.session_state.sid)
 
-    tab_answer, tab_sources = st.tabs(["Jawaban", "Sumber"])
-    with tab_answer:
-        st.markdown(r["answer"])
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Total", f"{r['latency_ms']/1000:.2f} s")
-        c2.metric("Retrieval", f"{r['retrieval_latency_ms']/1000:.2f} s")
-        c3.metric("LLM", f"{r['llm_latency_ms']/1000:.2f} s")
-        st.caption(f"Provider: {r['provider']} · Strategi: {r['strategy']}")
+    # Tambah assistant message ke history
+    st.session_state.messages.append({
+        "role": "assistant",
+        "content": r["answer"],
+        "sources": r["sources"],
+    })
 
-    with tab_sources:
-        for i, s in enumerate(r["sources"], 1):
-            with st.expander(f"[{i}] {s['source']} — hal.{s['page']} (score {s['score']:.3f})"):
-                st.text(r["contexts"][i-1][:1500])
+    # Re-render
+    st.rerun()

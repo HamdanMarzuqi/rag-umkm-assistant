@@ -47,6 +47,9 @@ CHUNK_OVERLAP = 64
 # ── Retrieval ──
 TOP_K = 5
 
+# ── Conversation ──
+CONVERSATION_TURNS = 3  # N-turn memory (berapa turn terakhir yang diingat)
+
 # ── API keys & endpoints ──
 OPENCODE_API_KEY = os.getenv("OPENCODE_API_KEY", "")
 OPENCODE_BASE_URL = os.getenv("OPENCODE_BASE_URL", "https://opencode.ai/zen/v1")
