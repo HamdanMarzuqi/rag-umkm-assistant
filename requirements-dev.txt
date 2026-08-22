@@ -1,0 +1,20 @@
+# ── Dev / Evaluation requirements (lokal, JANGAN dipakai Streamlit Cloud) ──
+# Untuk menjalankan eval RAGAS: pip install -r requirements-dev.txt
+# Ini versi yang Tuan pakai lokal & versi-eval terverifikasi.
+
+-r requirements.txt
+
+# Evaluation
+ragas==0.2.10
+datasets==3.2.0
+
+# LangChain family (dipakai RAGAS + langchain-huggingface embedding)
+langchain==0.3.27
+langchain-community==0.3.27
+langchain-qdrant==0.2.0
+langchain-huggingface==1.2.2
+langchain-openai==1.5.0
+
+# API server optional
+fastapi==0.115.6
+uvicorn==0.34.0

@@ -1,0 +1,13 @@
+# ── Runtime requirements (Streamlit Cloud / demo) ──
+# Minimal: hanya paket yang benar-benar di-import oleh app.py + src/*
+# (TIDAK ada langchain/ragas — itu hanya untuk eval lokal, lihat requirements-dev.txt)
+
+streamlit>=1.41
+sentence-transformers>=3.3,<4.0
+qdrant-client>=1.12,<2.0
+rank-bm25>=0.2
+pymupdf>=1.26
+groq>=0.13
+google-generativeai>=0.8
+openai>=2.0
+python-dotenv>=1.0
